@@ -1,0 +1,305 @@
+项目1
+# =============================================================================
+# 项目1
+# 打印三级菜单：汽车、种类、品牌、型号，可以自由发挥
+# 可返回上一级
+# 可随时退出程序
+# =============================================================================
+
+car_dict={
+          '汽车':{
+                  '轿车':{
+                          '奔驰':{
+                                  '奔驰350':{},
+                                  '奔驰450':{},
+                                  '奔驰550':{}
+                                 },
+                          '宝马':{
+                                  '宝马X1':{},
+                                  '宝马X2':{}
+                                 },
+                          '现代':{
+                                  '现代1号':{},
+                                  '现代2号':{},
+                                  '现代3号':{}
+                                 }
+                         },
+                  '越野车':{
+                            '别克':{
+                                    'GL7':{},
+                                    'GL8':{}
+                                   },
+                            '大众':{
+                                    '图观':{},
+                                    '图锐':{}
+                                   }                             
+                           },
+                  '大型客车':{
+                              '宇通':{
+                                      '客运':{},
+                                      '货运':{}
+                                     },
+                              '金龙':{
+                                      '金龙1':{},
+                                      '金龙2':{}
+                                     }
+                             },
+                 },
+          '非机动车':{
+                      '自行车':{
+                                '宝马':{
+                                        '宝马1系':{},
+                                        '宝马2系':{}
+                                       },
+                                '永久':{}
+                               },
+                      '摩托车':{
+                                '哈雷':{}
+                               }
+                     },
+          '飞机':{
+                  '客运飞机':{
+                              '波音':{},
+                              '空客':{}
+                             },
+                  '直升机':{
+                            '阿帕奇':{}
+                           }
+                 },
+          '火车':{
+                  '高铁':{},
+                  '动车':{},
+                  '绿皮车':{}
+                 }
+         }
+tag = True
+while tag:
+    enter=input('是否进入菜单(Y/N):')
+    if enter == 'N' or enter == 'n':
+        tag=False
+    elif enter != 'y' and enter != 'Y':
+        print('无法识别，请重新输入')
+        continue
+    else:
+        while tag:
+            print("请输入你想选择的品类,返回上一级请输入'B',退出请输入'Q'")
+            for key1 in car_dict:
+                print(key1)
+            choice1=input('---->')
+            if choice1 == 'b' or choice1 == 'B':
+                break
+            elif choice1 == 'q' or choice1 == 'Q':
+                tag=False
+            elif choice1 not in car_dict:
+                print('无法识别，请重新输入')
+                continue
+            else:
+                car_dict_1=car_dict[choice1]
+                while tag:
+                    print("请输入你想选择的种类,返回上一级请输入'B',退出请输入'Q'")
+                    for key2 in car_dict_1:
+                        print(key2)
+                    choice2=input('---->')
+                    if choice2 == 'b' or choice2 == 'B':
+                        break
+                    elif choice2 == 'q' or choice2 == 'Q':
+                        tag=False
+                    elif choice2 not in car_dict_1:
+                        print('无法识别，请重新输入')
+                        continue
+                    else:
+                        car_dict_2=car_dict_1[choice2]
+                        while tag:
+                            print("请输入你想选择的品牌,返回上一级请输入'B',退出请输入'Q'")
+                            for key3 in car_dict_2:
+                                print(key3)
+                            choice3=input('---->')
+                            if choice3 == 'b' or choice3 == 'B':
+                                break
+                            elif choice3 == 'q' or choice3 == 'Q':
+                                tag=False
+                            elif choice3 not in car_dict_2:
+                                print('无法识别，请重新输入')
+                                continue                    
+                            else:
+                                car_dict_3=car_dict_2[choice3]
+                                while tag:
+                                    print("返回上一级请输入'B',退出请输入'Q'")
+                                    for key4 in car_dict_3:
+                                        print(key4)
+                                    choice4=input('---->')
+                                    if choice4 == 'b' or choice4 == 'B':
+                                        break
+                                    elif choice4 == 'q' or choice4 == 'Q':
+                                        tag=False
+                                    elif choice1 not in car_dict:
+                                        print('无法识别，请重新输入')
+                                        continue     
+                                        
+
+
+项目2
+# =============================================================================
+# 需求：
+# 用户名、密码和余额存放于文件中，格式为：Albert|Albert123|3000
+# 启动程序后：
+#     已注册用户====>先登录====>登录成功====>读取用户余额====>开始购物
+#              登录过程中，用户密码输入超过三次则退出程序，
+#              并将用户名添加到黑名单，再次启动程序登录该用户名，提示用户禁止登录
+#     未注册用户====>先注册====>注册成功====>输入用户工资，即为用户余额====>开始购物
+#              注册过程中，用户密码输入两次一样才可以注册
+# 允许用户根据商品编号购买商品，比如：
+# 1 iphone
+# 2 macbook
+# 3 bike
+# 用户选择商品后，检测余额是否够，够就直接扣款，修改文件中用户余额，不够就提醒
+# 可随时退出，退出时，打印已购买商品和余额
+# =============================================================================
+
+#思路
+#1、先读取文件判断是否为注册用户，如未注册则建立新文件增加注册人信息后替换原文件。
+#2、提前建立商品字典，已注册用户登录成功后打印商品字典，根据购买情况修改源文件余额
+#3、已购买商品和余额生成字典，在退出时打印
+
+#with open('user_information.txt',mode='w',encoding='utf-8') as user_information:
+#    user_information.write('Albert|Albert123|3000') #建立初始客户信息文件
+#with open('black_list.txt',mode='w',encoding='utf-8') as bl:#建立初始黑名单文件
+#    bl.write('')
+#with open('goods_list.txt',mode='w',encoding='utf-8') as goods_list:
+#    goods_list.writelines(['编号  名称  价格\n','1  iphone  500\n','2  macbook  1000\n','3  bike  300\n'])
+import os
+tag=True
+item_list=[]
+goods_num=[]
+while tag:
+    with open('user_information.txt',mode='r',encoding='utf-8') as user_information,\
+        open('black_list.txt',mode='r',encoding='utf-8') as black_list_temp: #读取客户信息和黑名单文件
+        black_list_t=[]
+        for cust in black_list_temp:
+            cust=cust.replace('\n','')
+            black_list_t.append(cust)
+        user_list=[]
+        for user in user_information:
+            user=user.replace('\n','')
+            user_list.append(user.split('|'))    
+    user_name = input('登录请输入用户名：')
+    user_code = input('请输入密码：')
+    log_in = input('输入Y登录，输入N退出：')
+    cnt=0
+    for user_detail in user_list: #判断是否已注册
+        if log_in == 'N' or log_in == 'n':
+            tag=False
+            continue
+        elif (log_in == 'Y' or log_in == 'y') and user_name in black_list_t:
+            print('您已进入黑名单，禁止登录')
+            break
+        elif (log_in == 'Y' or log_in == 'y') and not (user_name in black_list_t or user_name in user_detail): #未注册用户注册
+            print('请先注册！')
+            while tag:
+                name = input('请输入想要注册的用户名：')
+                code = input('请输入密码：')
+                code1 = input('请再输入一次密码：')
+                register = input('输入Y注册，输入N退出：')
+                name_list=[]
+                for user_detail in user_list:
+                    name_list.append(user_detail[0])
+                if register == 'N' or register == 'n':
+                    tag=False
+                    continue
+                elif name in name_list:
+                    print('该用户名已被使用，请重新输入')
+                    continue
+                elif code != code1:
+                    print('两次输入密码不一致，请重新输入')
+                    continue
+                else:                        
+                    balance = input('请输入您的工资金额：')
+                    print('注册成功！请重新登录')
+                    with open('user_information.txt',mode='a',encoding='utf-8') as user_information_new:
+                        user_information_new.write(name+'|'+code+'|'+balance+'\n') #新注册用户信息存入用户信息文件
+                    break
+            break        
+        elif (log_in == 'Y' or log_in == 'y') and not (user_name in black_list_t or user_name in user_detail) and user_code not in user_detail:
+            while cnt <= 3:
+                print('密码错误，请重新输入')
+                cnt += 1
+                break
+            else:
+                with open('black_list.txt',mode='a',encoding='utf-8') as black_list:
+                    black_list.write(user_name+'\n') #更新黑名单信息
+                tag=False
+            break
+        else:
+            shopping = input('登录成功,输入Y开始购物，输入N退出：')
+            if shopping == 'n' or shopping == 'N':
+                tag=False
+                break
+            else:
+                with open('goods_list.txt',mode='r',encoding='utf-8') as goods_list:  #读取商品明细文件                 
+                    for line in goods_list:
+                        print(line)
+                    good_list=[]
+                with open('goods_list.txt',mode='r',encoding='utf-8') as goods_list:
+                    for good in goods_list:
+                        good=good.replace('\n','')
+                        good_list.append(good.split('  '))
+                cost_list = []
+                balance_org = int(user_detail[2])
+                while tag:
+                    good_no = input('请输入想要购买的商品编号：')
+                    next_step = input('输入Y进入下一步，输入N退出：')
+                    if next_step == 'n' or next_step == 'N':
+                        tag=False
+                        continue
+                    else:
+                        for item in good_list:
+                            if good_no in item:
+                               num = input('您要购买的是'+item[1]+'\n'+'单价为'+item[2]+'\n'+'请输入您要购买的数量：')
+                               item_cost = int(item[2])*int(num)
+                               item_list.append(item[1])
+                               goods_num.append(num)
+                               cost_list.append(item_cost)
+                               next_step = input('输入Y进入下一步，输入A继续添加商品，输入N退出：')
+                               if next_step == 'n' or next_step == 'N':
+                                   tag=False
+                                   break
+                               elif next_step == 'a' or next_step == 'A':
+                                   break
+                               else:
+                                   total_cost=0
+                                   for cost in cost_list:
+                                       total_cost += cost
+                                   if total_cost > balance_org:
+                                       print('余额不足，请重新选择商品')
+                                       break
+                                   else:
+                                       print('支付成功，退出登录')
+                                       balance_new=balance_org-total_cost
+                                       with open('user_information_temp.txt',mode='w',encoding='utf-8') as user_information_write:
+                                           user_list_new=[]
+                                           for users in user_list:
+                                               if user_name in users:
+                                                   users[2] = str(balance_new)
+                                                   user_new = users[0]+'|'+users[1]+'|'+users[2]+'\n'
+                                                   user_list_new.append(user_new) 
+                                               else:
+                                                   user_new = users[0]+'|'+users[1]+'|'+users[2]+'\n'
+                                                   user_list_new.append(user_new)  
+                                           user_information_write.writelines(user_list_new) #修改后的用户信息更新到用户信息文件中
+                                       tag=False
+                                       break                 
+                            else:
+                                continue
+                        else:
+                            print('商品编号不在范围内，请重新输入')
+                            continue
+                break            
+    break
+if item_list == []:
+    balance_after = balance_org
+else:
+    balance_after = balance_new
+print('您本次购买商品为：',item_list,'数量分别为：',goods_num,'当前余额为：',balance_after)    
+
+os.remove('user_information.txt')
+os.rename('user_information_temp.txt','user_information.txt') 
